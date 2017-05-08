@@ -26,6 +26,7 @@
 // limitations under the License.
 // ---------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -58,6 +59,17 @@ namespace WeText.Common
                 return GetUniqueIdentifier(length);
             }
             return result.ToString();
+        }
+
+        /// <summary>
+        /// 获取端口号
+        /// </summary>
+        /// <param name="baseUrl"></param>
+        /// <returns></returns>
+        public static int? GetPort(string baseUrl)
+        {
+            var uri = new Uri(baseUrl, UriKind.Absolute);
+            return uri.Port;
         }
     }
 }

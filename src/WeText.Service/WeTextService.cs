@@ -16,12 +16,15 @@ using System.Collections.Generic;
 using WeText.Common;
 using WeText.Common.Config;
 using WeText.Services.Common;
+using WeText.Common.Consul;
 
 namespace WeText.Service
 {
     internal sealed class WeTextService : Common.Services.Service
     {
         private readonly WeTextConfiguration configuration = WeTextConfiguration.Instance;
+
+        private static ConsulAgentServiceRegistration registration = null;
 
         private const string SearchPath = "services";
         private static List<IService> microServices = new List<IService>();
@@ -42,7 +45,7 @@ namespace WeText.Service
                     if (microserviceRegisterType != null)
                     {
                         var registeringService = microserviceRegisterType.BaseType.GetGenericArguments().First();
-                        if (configuration.Services.All(x=>x.Type != registeringService.FullName))
+                        if (configuration.Services.All(x => x.Type != registeringService.FullName))
                         {
                             continue;
                         }
@@ -59,9 +62,39 @@ namespace WeText.Service
             }
         }
 
+        /// <summary>
+        /// 服务发现
+        /// </summary>
+        private void RegisterServiceDiscovery()
+        {
+            registration = new ConsulAgentServiceRegistration()
+            {
+                ID = $"ss-{Guid.NewGuid()}",
+                Name = "api",
+                Port = 9023,
+                Tags = new[] { "tag1", "tag2" },
+                Address = "http://127.0.0.1",
+                Check = new ConsulAgentServiceCheck
+                {
+                    Interval = "60s",
+                    HTTP = "http://127.0.0.1:9023/api/consul/heartbeat",
+                }
+            };
+
+            ConsulService.Register(registration);
+        }
+
+        private void UnRegisterServerDiscovery()
+        {
+            if (registration != null)
+            {
+                //服务注销
+                ConsulService.UnRegister(registration.ID);
+            }
+        }
+
         public void Configuration(IAppBuilder app)
         {
-            
             var builder = new ContainerBuilder();
 
             builder.RegisterInstance<WeTextConfiguration>(this.configuration).SingleInstance();
@@ -84,10 +117,14 @@ namespace WeText.Service
                 CollectionName = configuration.MongoEventStore.CollectionName,
                 DatabaseName = configuration.MongoEventStore.Database
             };
+
             builder.Register(x => new MongoDomainRepository(mongoSetting, x.Resolve<IEventPublisher>())).As<IDomainRepository>();
 
             // Discovers the services.
             DiscoverServices(builder);
+
+            //ServiceDiscovery
+            RegisterServiceDiscovery();
 
             // Register the API controllers within the current assembly.
             builder.RegisterApiControllers(this.GetType().Assembly);
@@ -145,7 +182,9 @@ namespace WeText.Service
             }
 
             var url = configuration.ApplicationSetting.Url;
+
             log.Info("Starting WeText Service...");
+
             using (WebApp.Start<WeTextService>(url: url))
             {
                 microServices.ForEach(ms =>
@@ -153,8 +192,13 @@ namespace WeText.Service
                     log.Info($"Starting microservice '{ms.GetType().FullName}'...");
                     ms.Start(args);
                 });
+
                 log.Info("WeText Service started successfully.");
+
                 Console.ReadLine();
+
+                //服务注销
+                UnRegisterServerDiscovery();
             }
         }
     }

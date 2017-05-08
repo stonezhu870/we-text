@@ -62,7 +62,7 @@ namespace WeText.Services.Common
         {
             this.configuration = configuration;
             this.commandSender = commandSender;
-            this.tableDataGateway = tableGatewayRegistration.First(x => x.Metadata.Name == $"{typeof(TService).FullName}.TableDataGateway").Value;
+            this.tableDataGateway = tableGatewayRegistration.FirstOrDefault(x => x.Metadata.Name == $"{typeof(TService).FullName}.TableDataGateway")?.Value;
         }
 
         /// <summary>

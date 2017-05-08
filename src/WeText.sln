@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeText.Common", "WeText.Common\WeText.Common.csproj", "{97C426D5-34AA-43C8-ADF9-1206D90A2DCB}"
 EndProject
@@ -19,6 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeText.Messaging.RabbitMq",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeText.Service", "WeText.Service\WeText.Service.csproj", "{336EA554-A51C-4BBF-9EDD-223EF1446E8A}"
 	ProjectSection(ProjectDependencies) = postProject
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E} = {E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}
 		{71B2FD92-0D5C-46C9-B939-2C5A5DFF931E} = {71B2FD92-0D5C-46C9-B939-2C5A5DFF931E}
 		{1E2E77C7-1DBB-4A77-BBB3-A09F7A67326A} = {1E2E77C7-1DBB-4A77-BBB3-A09F7A67326A}
 		{177A79D6-70DC-435B-AE7A-B94402969A8B} = {177A79D6-70DC-435B-AE7A-B94402969A8B}
@@ -35,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeText.Services.Common", "Services\WeText.Services.Common\WeText.Services.Common.csproj", "{D813A23A-15C4-409C-BB17-27FBFB009358}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeText.Querying.PostgreSQL", "WeText.Querying.PostgreSQL\WeText.Querying.PostgreSQL.csproj", "{F3EE2537-93F5-4B9A-8BD0-F328320A1500}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeText.Services.HealthChecks", "Services\WeText.Services.HealthChecks\WeText.Services.HealthChecks.csproj", "{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +147,14 @@ Global
 		{F3EE2537-93F5-4B9A-8BD0-F328320A1500}.ServerDebug|Any CPU.Build.0 = Debug|Any CPU
 		{F3EE2537-93F5-4B9A-8BD0-F328320A1500}.ServerRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{F3EE2537-93F5-4B9A-8BD0-F328320A1500}.ServerRelease|Any CPU.Build.0 = Release|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.ServerDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.ServerDebug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.ServerRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E}.ServerRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,5 +164,6 @@ Global
 		{177A79D6-70DC-435B-AE7A-B94402969A8B} = {F7E6FDA2-4F6A-4A0E-B28F-F40D1675CE19}
 		{1E2E77C7-1DBB-4A77-BBB3-A09F7A67326A} = {F7E6FDA2-4F6A-4A0E-B28F-F40D1675CE19}
 		{D813A23A-15C4-409C-BB17-27FBFB009358} = {F7E6FDA2-4F6A-4A0E-B28F-F40D1675CE19}
+		{E7A15A4A-D09B-4B2C-93A7-0AB67E710B0E} = {F7E6FDA2-4F6A-4A0E-B28F-F40D1675CE19}
 	EndGlobalSection
 EndGlobal

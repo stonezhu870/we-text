@@ -80,7 +80,7 @@ namespace WeText.Services.Common
 
         protected IEventPublisher ResolveGlobalEventPublisher(IComponentContext context) => context.Resolve<IEventPublisher>();
 
-        protected ITableDataGateway ResolveTableDataGateway(IComponentContext context) => context.Resolve<IEnumerable<Lazy<ITableDataGateway, NamedMetadata>>>().First(p => p.Metadata.Name == $"{ThisConfiguration.Type}.TableDataGateway").Value;
+        protected ITableDataGateway ResolveTableDataGateway(IComponentContext context) => context.Resolve<IEnumerable<Lazy<ITableDataGateway, NamedMetadata>>>().FirstOrDefault(p => p.Metadata.Name == $"{ThisConfiguration.Type}.TableDataGateway")?.Value;
 
         protected virtual Func<IComponentContext, ITableDataGateway> TableDataGatewayInitializer => null;
 
@@ -130,8 +130,11 @@ namespace WeText.Services.Common
             {
                 foreach (var value in initializer)
                 {
-                    builder.Register(x => value(x))
-                        .Named<ICommandHandler>($"{ThisConfiguration.Type}.CommandHandlers");
+                    if (value != null)
+                    {
+                        builder.Register(x => value(x))
+                            .Named<ICommandHandler>($"{ThisConfiguration.Type}.CommandHandlers");
+                    }
                 }
             }
         }
@@ -143,8 +146,11 @@ namespace WeText.Services.Common
             {
                 foreach (var value in initializer)
                 {
-                    builder.Register(x => value(x))
-                        .Named<IDomainEventHandler>($"{ThisConfiguration.Type}.EventHandlers");
+                    if (value != null)
+                    {
+                        builder.Register(x => value(x))
+                            .Named<IDomainEventHandler>($"{ThisConfiguration.Type}.EventHandlers");
+                    }
                 }
             }
         }

@@ -52,6 +52,10 @@
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -73,6 +77,28 @@
       <DependentUpon>WeText.Config.csd</DependentUpon>
     </Compile>
     <Compile Include="Config\WeTextConfigurationException.cs" />
+    <Compile Include="Consul\ConsulApiUriBuilder.cs" />
+    <Compile Include="Consul\ConsulConstants.cs" />
+    <Compile Include="Consul\ConsulRsetApiClient.cs" />
+    <Compile Include="Consul\ConsulService.cs" />
+    <Compile Include="Consul\Extensions\HttpResponseConsulResultExtension.cs" />
+    <Compile Include="Consul\Interfaces\IConsulAgentApiClient.cs" />
+    <Compile Include="Consul\Interfaces\IConsulHealthApiClient.cs" />
+    <Compile Include="Consul\Interfaces\IConsulKVApiClient.cs" />
+    <Compile Include="Consul\Interfaces\IConsulRsetApiClient.cs" />
+    <Compile Include="Consul\Models\ConsulHealthCheck.cs" />
+    <Compile Include="Consul\Models\ConsulNode.cs" />
+    <Compile Include="Consul\Models\KV\ConsulKVPair.cs" />
+    <Compile Include="Consul\Models\Service\ConsulAgentService.cs" />
+    <Compile Include="Consul\Models\Service\ConsulAgentServiceCheck.cs" />
+    <Compile Include="Consul\Models\Service\ConsulAgentServiceRegistration.cs" />
+    <Compile Include="Consul\Models\Service\ConsulServiceEntry.cs" />
+    <Compile Include="Consul\PartialClass\ConsulAgentApiClient.cs" />
+    <Compile Include="Consul\PartialClass\ConsulHealthApiClient.cs" />
+    <Compile Include="Consul\PartialClass\ConsulKVApiClient.cs" />
+    <Compile Include="Consul\Results\ConsulApiQueryResult.cs" />
+    <Compile Include="Consul\Results\ConsulApiWriteResult.cs" />
+    <Compile Include="Consul\Results\ConsulRsetApiResult.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\IDomainEventHandler.cs" />
