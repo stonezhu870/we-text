@@ -6,38 +6,39 @@ using System.Web.Mvc;
 using WeText.Web.Models;
 using Newtonsoft.Json;
 using System;
+using WeText.Common.Consul;
+using WeText.Common.Services;
+using WeText.Common;
 
 namespace WeText.Web.Controllers
 {
     [Authorize]
     public class MyFriendController : Controller
     {
-        private readonly string baseAddress = ConfigReader.ServiceUrl;
-
         public async Task<ActionResult> Index()
         {
             var vm = new MyFriendViewModel();
             var userId = User.Identity.GetUserId();
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync($"api/social/others/{userId}");
+                var result = await proxy.GetAsync(ServiceList.Social, $"others/{userId}");
                 result.EnsureSuccessStatusCode();
                 dynamic userNames = JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
                 List<SelectListItem> items = new List<SelectListItem>();
-                foreach(var userName in userNames)
+                foreach (var userName in userNames)
                 {
                     items.Add(new SelectListItem { Text = userName.DisplayName, Value = userName.UserId });
                 }
                 vm.UserNames = items;
 
-                var getSentInvitationsResult = await proxy.GetAsync($"api/social/invitation/{userId}/sent");
+                var getSentInvitationsResult = await proxy.GetAsync(ServiceList.Social, $"invitation/{userId}/sent");
                 getSentInvitationsResult.EnsureSuccessStatusCode();
                 dynamic sentInvitations = JsonConvert.DeserializeObject(await getSentInvitationsResult.Content.ReadAsStringAsync());
-                foreach(var inv in sentInvitations)
+                foreach (var inv in sentInvitations)
                 {
                     var statusName = string.Empty;
                     bool isCompleted = false;
-                    switch((int)inv.InvitationEndReason)
+                    switch ((int)inv.InvitationEndReason)
                     {
                         case 1:
                             statusName = "Waiting For Approval";
@@ -62,7 +63,7 @@ namespace WeText.Web.Controllers
                     });
                 }
 
-                var getReceivedInvitationsResult = await proxy.GetAsync($"api/social/invitation/{userId}/received");
+                var getReceivedInvitationsResult = await proxy.GetAsync(ServiceList.Social, $"invitation/{userId}/received");
                 getReceivedInvitationsResult.EnsureSuccessStatusCode();
                 dynamic receivedInvitations = JsonConvert.DeserializeObject(await getReceivedInvitationsResult.Content.ReadAsStringAsync());
                 foreach (var inv in receivedInvitations)
@@ -95,7 +96,7 @@ namespace WeText.Web.Controllers
                 }
                 return View(vm);
             }
-            
+
         }
 
         [HttpPost]
@@ -105,9 +106,9 @@ namespace WeText.Web.Controllers
             var userId = User.Identity.GetUserId();
             var targetUserId = model.SelectedUserId;
             var invitationLetter = model.InvitationLetter;
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.PostAsJsonAsync("api/social/invitation/send", new
+                var result = await proxy.PostAsJsonAsync(ServiceList.Social, "invitation/send", new
                 {
                     OriginatorId = userId,
                     TargetUserId = targetUserId,
@@ -127,13 +128,14 @@ namespace WeText.Web.Controllers
         public async Task<ActionResult> Accept(Guid invitationId)
         {
             var userId = User.Identity.GetUserId();
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.PostAsJsonAsync("api/social/invitation/accept", new
+                var result = await proxy.PostAsJsonAsync(ServiceList.Social, "invitation/accept", new
                 {
                     CurrentUserId = userId,
                     InvitationId = invitationId
                 });
+
                 return RedirectToAction("Info", "Home", new
                 {
                     MessageTitle = "Success!",

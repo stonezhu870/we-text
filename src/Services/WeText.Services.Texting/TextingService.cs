@@ -16,5 +16,13 @@ namespace WeText.Services.Texting
         {
 
         }
+
+        public override string ServiceName
+        {
+            get
+            {
+                return "texts";
+            }
+        }
     }
 }

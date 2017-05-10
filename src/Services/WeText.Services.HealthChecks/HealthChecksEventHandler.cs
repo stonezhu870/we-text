@@ -21,7 +21,7 @@ namespace WeText.Services.HealthChecks
             this.gateway = gateway;
         }
 
-        public async Task HandleAsync(TextCreatedEvent message)
+        public async Task Handle(TextCreatedEvent message)
         {
             var textObject = new HealthChecksTableObject
             {
@@ -35,7 +35,7 @@ namespace WeText.Services.HealthChecks
             await this.gateway.InsertAsync<HealthChecksTableObject>(new[] { textObject });
         }
 
-        public async Task HandleAsync(TextChangedEvent message)
+        public async Task Handle(TextChangedEvent message)
         {
             var id = message.AggregateRootKey.ToString();
             var updateCriteria = new UpdateCriteria<HealthChecksTableObject>();

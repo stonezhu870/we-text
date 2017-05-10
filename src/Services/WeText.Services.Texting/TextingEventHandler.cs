@@ -21,7 +21,7 @@ namespace WeText.Services.Texting
             this.gateway = gateway;
         }
 
-        public async Task HandleAsync(TextCreatedEvent message)
+        public async Task Handle(TextCreatedEvent message)
         {
             var textObject = new TextTableObject
             {
@@ -35,7 +35,7 @@ namespace WeText.Services.Texting
             await this.gateway.InsertAsync<TextTableObject>(new[] { textObject });
         }
 
-        public async Task HandleAsync(TextChangedEvent message)
+        public async Task Handle(TextChangedEvent message)
         {
             var id = message.AggregateRootKey.ToString();
             var updateCriteria = new UpdateCriteria<TextTableObject>();

@@ -28,7 +28,7 @@ namespace WeText.Services.HealthChecks
         {
             get
             {
-                yield return null;
+                yield return x => new HealthChecksCommandHandler(x.Resolve<IDomainRepository>());
             }
         }
 

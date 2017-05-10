@@ -16,5 +16,13 @@ namespace WeText.Services.HealthChecks
         {
 
         }
+
+        public override string ServiceName
+        {
+            get
+            {
+                return "WeText-HealthChecks";
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace WeText.Services.Texting
             this.domainRepository = domainRepository;
         }
 
-        public async Task HandleAsync(ChangeTextCommand message)
+        public async Task Handle(ChangeTextCommand message)
         {
             var text = await this.domainRepository.GetByKeyAsync<Guid, Text>(message.TextId);
             bool updated = false;
@@ -44,7 +44,7 @@ namespace WeText.Services.Texting
             }
         }
 
-        public async Task HandleAsync(CreateTextCommand message)
+        public async Task Handle(CreateTextCommand message)
         {
             var text = new Text(message.TextId, message.Title, message.Content, message.UserId);
             await this.domainRepository.SaveAsync<Guid, Text>(text);

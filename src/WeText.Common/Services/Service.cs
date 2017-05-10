@@ -41,5 +41,7 @@ namespace WeText.Common.Services
         /// <param name="args">The arguments with which the service will use
         /// to start.</param>
         public abstract void Start(object[] args);
+
+        public abstract string ServiceName { get; }
     }
 }

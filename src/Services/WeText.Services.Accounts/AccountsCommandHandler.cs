@@ -21,7 +21,7 @@ namespace WeText.Services.Accounts
             this.domainRepository = domainRepository;
         }
 
-        public async Task HandleAsync(UpdateUserCommand message)
+        public async Task Handle(UpdateUserCommand message)
         {
             var user = await domainRepository.GetByKeyAsync<Guid, User>(message.UserId);
             bool updated = false;
@@ -41,7 +41,7 @@ namespace WeText.Services.Accounts
             }
         }
 
-        public async Task HandleAsync(CreateUserCommand message)
+        public async Task Handle(CreateUserCommand message)
         {
             var user = new User(message.UserId, message.Name, message.Password, message.Email, message.DisplayName);
             await this.domainRepository.SaveAsync<Guid, User>(user);

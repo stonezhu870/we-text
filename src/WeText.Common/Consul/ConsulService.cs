@@ -51,6 +51,18 @@ namespace WeText.Common.Consul
             }
         }
 
+        public static ConsulAgentService GetServices(string name)
+        {
+            var allData = GetServices() ?? new Dictionary<string, ConsulAgentService>();
+
+            if (allData.ContainsKey(name))
+            {
+                return allData[name];
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// 查询服务
         /// </summary>

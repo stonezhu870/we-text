@@ -16,6 +16,13 @@ namespace WeText.Services.Accounts
         {
 
         }
-        
+
+        public override string ServiceName
+        {
+            get
+            {
+                return "accounts";
+            }
+        }
     }
 }

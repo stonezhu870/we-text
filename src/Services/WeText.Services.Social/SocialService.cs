@@ -16,5 +16,13 @@ namespace WeText.Services.Social
         {
 
         }
+
+        public override string ServiceName
+        {
+            get
+            {
+                return "social";
+            }
+        }
     }
 }

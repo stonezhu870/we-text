@@ -68,7 +68,7 @@ namespace WeText.Common
         /// <returns></returns>
         public static int? GetPort(string baseUrl)
         {
-            var uri = new Uri(baseUrl, UriKind.Absolute);
+            var uri = new Uri(baseUrl);
             return uri.Port;
         }
     }

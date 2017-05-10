@@ -178,7 +178,6 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyFriendViewModel.cs" />
     <Compile Include="Models\InvitationViewModel.cs" />
-    <Compile Include="Models\ServiceProxy.cs" />
     <Compile Include="Models\TextViewModel.cs" />
     <Compile Include="Models\WebApiUserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -217,7 +216,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -256,7 +257,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-2.2.2.min.map" />
   </ItemGroup>

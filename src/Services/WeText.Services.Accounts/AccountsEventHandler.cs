@@ -22,7 +22,7 @@ namespace WeText.Services.Accounts
             this.gateway = gateway;
         }
 
-        public async Task HandleAsync(UserEmailChangedEvent message)
+        public async Task Handle(UserEmailChangedEvent message)
         {
             var accountId = message.AggregateRootKey.ToString();
             var updateCriteria = new UpdateCriteria<AccountTableObject> { { x => x.Email, message.Email } };
@@ -30,7 +30,7 @@ namespace WeText.Services.Accounts
             await gateway.UpdateAsync<AccountTableObject>(updateCriteria, updateSpecification);
         }
 
-        public async Task HandleAsync(UserDisplayNameChangedEvent message)
+        public async Task Handle(UserDisplayNameChangedEvent message)
         {
             var accountId = message.AggregateRootKey.ToString();
             var updateCriteria = new UpdateCriteria<AccountTableObject> { { x => x.DisplayName, message.DisplayName } };
@@ -38,7 +38,7 @@ namespace WeText.Services.Accounts
             await gateway.UpdateAsync<AccountTableObject>(updateCriteria, updateSpecification);
         }
 
-        public async Task HandleAsync(UserCreatedEvent message)
+        public async Task Handle(UserCreatedEvent message)
         {
             var userTableObject = new AccountTableObject
             {

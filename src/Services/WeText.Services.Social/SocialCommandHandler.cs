@@ -25,7 +25,7 @@ namespace WeText.Services.Social
         }
 
 
-        public async Task HandleAsync(RejectInvitationCommand message)
+        public async Task Handle(RejectInvitationCommand message)
         {
             var user = await this.domainRepository.GetByKeyAsync<Guid, User>(message.UserId);
             var invitation = await this.domainRepository.GetByKeyAsync<Guid, Invitation>(message.InvitationId);
@@ -33,7 +33,7 @@ namespace WeText.Services.Social
             await this.domainRepository.SaveAsync<Guid, User>(user);
         }
 
-        public async Task HandleAsync(AddFriendCommand message)
+        public async Task Handle(AddFriendCommand message)
         {
             var originator = await this.domainRepository.GetByKeyAsync<Guid, User>(message.OriginatorId);
             originator.AddFriend(message.AcceptorId);
@@ -44,7 +44,7 @@ namespace WeText.Services.Social
             await this.domainRepository.SaveAsync<Guid, User>(acceptor);
         }
 
-        public async Task HandleAsync(AcceptInvitationCommand message)
+        public async Task Handle(AcceptInvitationCommand message)
         {
             var invitation = await this.domainRepository.GetByKeyAsync<Guid, Invitation>(message.InvitationId);
             var user = await this.domainRepository.GetByKeyAsync<Guid, User>(message.UserId);
@@ -52,7 +52,7 @@ namespace WeText.Services.Social
             await this.domainRepository.SaveAsync<Guid, User>(user);
         }
 
-        public async Task HandleAsync(SendInvitationCommand message)
+        public async Task Handle(SendInvitationCommand message)
         {
             var originator = await this.domainRepository.GetByKeyAsync<Guid, User>(message.OriginatorId);
             var targetUser = await this.domainRepository.GetByKeyAsync<Guid, User>(message.TargetUserId);

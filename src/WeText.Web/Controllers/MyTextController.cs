@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using WeText.Common;
+using WeText.Common.Services;
 using WeText.Web.Models;
 
 namespace WeText.Web.Controllers
@@ -12,15 +14,12 @@ namespace WeText.Web.Controllers
     [Authorize]
     public class MyTextController : Controller
     {
-        private readonly string baseAddress = ConfigReader.ServiceUrl;
-
-
         public async Task<ActionResult> Index()
         {
             var userId = User.Identity.GetUserId();
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync($"api/texts/user/{userId}");
+                var result = await proxy.GetAsync(ServiceList.Texting, $"user/{userId}");
                 result.EnsureSuccessStatusCode();
                 var model = JsonConvert.DeserializeObject<IEnumerable<TextViewModel>>(await result.Content.ReadAsStringAsync());
                 return View(model);
@@ -29,9 +28,9 @@ namespace WeText.Web.Controllers
 
         public async Task<ActionResult> Text(string id)
         {
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync($"api/texts/{id}");
+                var result = await proxy.GetAsync(ServiceList.Texting, $"{id}");
                 result.EnsureSuccessStatusCode();
                 var model = JsonConvert.DeserializeObject<IEnumerable<TextViewModel>>(await result.Content.ReadAsStringAsync()).FirstOrDefault();
                 return View(model);
@@ -48,9 +47,11 @@ namespace WeText.Web.Controllers
         public async Task<ActionResult> Create(CreateTextViewModel model)
         {
             var userId = User.Identity.GetUserId();
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.PostAsJsonAsync("api/texts/create", new
+                var _client = new HttpClient();
+           
+                var result = await proxy.PostAsJsonAsync(ServiceList.Texting, "create", new
                 {
                     model.Title,
                     model.Content,
@@ -69,9 +70,9 @@ namespace WeText.Web.Controllers
 
         public async Task<ActionResult> Edit(string id)
         {
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync($"api/texts/{id}");
+                var result = await proxy.GetAsync(ServiceList.Texting, $"{id}");
                 result.EnsureSuccessStatusCode();
                 var model = JsonConvert.DeserializeObject<IEnumerable<TextViewModel>>(await result.Content.ReadAsStringAsync()).FirstOrDefault();
                 return View(new EditTextViewModel { TextId = id, Title = model.Title, Content = model.Content });
@@ -82,9 +83,9 @@ namespace WeText.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditTextViewModel model)
         {
-            using (var proxy = new ServiceProxy(baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.PostAsJsonAsync($"api/texts/update/{model.TextId}", new
+                var result = await proxy.PostAsJsonAsync(ServiceList.Texting, $"update/{model.TextId}", new
                 {
                     model.Title,
                     model.Content

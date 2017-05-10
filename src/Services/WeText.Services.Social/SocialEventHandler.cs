@@ -35,19 +35,19 @@ namespace WeText.Services.Social
             this.commandSender = commandSender;
         }
 
-        public async Task HandleAsync(InvitationRejectedEvent message)
+        public async Task Handle(InvitationRejectedEvent message)
         {
             var invitation = await domainRepository.GetByKeyAsync<Guid, Invitation>(message.InvitationId);
             invitation.Transit(message);
             await this.domainRepository.SaveAsync<Guid, Invitation>(invitation);
         }
 
-        public async Task HandleAsync(UserCreatedEvent message)
+        public async Task Handle(UserCreatedEvent message)
         {
             await this.tableGateway.InsertAsync<UserNameTableObject>(new[] { new UserNameTableObject { UserId = message.AggregateRootKey.ToString(), DisplayName = message.DisplayName } });
         }
 
-        public async Task HandleAsync(UserDisplayNameChangedEvent message)
+        public async Task Handle(UserDisplayNameChangedEvent message)
         {
             var userId = message.AggregateRootKey.ToString();
             var networkTableUpdateBatch = new List<Tuple<UpdateCriteria<NetworkTableObject>, Specification<NetworkTableObject>>>();
@@ -64,7 +64,7 @@ namespace WeText.Services.Social
             await this.tableGateway.UpdateAsync<UserNameTableObject>(userNamesTableUpdateCriteria, userIdSpecification);
         }
 
-        public async Task HandleAsync(InvitationSentEvent message)
+        public async Task Handle(InvitationSentEvent message)
         {
             var invitation = new Invitation();
             invitation.Transit(message);
@@ -84,7 +84,7 @@ namespace WeText.Services.Social
             await this.tableGateway.InsertAsync<NetworkTableObject>(new[] { network });
         }
 
-        public async Task HandleAsync(InvitationCompletedEvent message)
+        public async Task Handle(InvitationCompletedEvent message)
         {
             InvitationEndReason reason = message.Accepted ? InvitationEndReason.Accepted : InvitationEndReason.Rejected;
             var updateCriteria = new UpdateCriteria<NetworkTableObject>
@@ -98,7 +98,7 @@ namespace WeText.Services.Social
             await this.tableGateway.UpdateAsync<NetworkTableObject>(updateCriteria, specification);
         }
 
-        public async Task HandleAsync(InvitationApprovedEvent message)
+        public async Task Handle(InvitationApprovedEvent message)
         {
             var invitation = await domainRepository.GetByKeyAsync<Guid, Invitation>(message.InvitationId);
             invitation.Transit(message);

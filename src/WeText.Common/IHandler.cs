@@ -41,6 +41,6 @@ namespace WeText.Common
         /// </summary>
         /// <param name="message">The message to be handled.</param>
         /// <returns>The <see cref="Task"/> instance which executes the message handling logic.</returns>
-        Task HandleAsync(TMessage message);
+        Task Handle(TMessage message);
     }
 }

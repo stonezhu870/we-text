@@ -75,6 +75,7 @@
     <Compile Include="HealthChecksService.cs" />
     <Compile Include="HealthChecksServiceRegister.cs" />
     <Compile Include="HealthChecksTableObject.cs" />
+    <Compile Include="HealthChecksCommandHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -8,6 +8,8 @@
     using Microsoft.AspNet.Identity;
     using Newtonsoft.Json;
     using WeText.Common;
+    using Common.Services;
+
     /// <summary>
     /// Represents the user store which utilizes the RESTful service to manage the application users.
     /// </summary>
@@ -27,9 +29,9 @@
 
         public async Task<bool> AuthenticateAsync(ApplicationUser user, string passwordHash)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync($"api/accounts/name/{user.UserName}");
+                var result = await proxy.GetAsync(ServiceList.Accounts, $"name/{user.UserName}");
                 result.EnsureSuccessStatusCode();
                 dynamic accounts = JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
                 dynamic account = accounts[0];
@@ -66,9 +68,9 @@
 
         public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync(string.Format("api/accounts/email/{0}/", email));
+                var result = await proxy.GetAsync(ServiceList.Accounts, string.Format("email/{0}/", email));
                 if (result.StatusCode == HttpStatusCode.NotFound)
                 {
                     return null;
@@ -122,9 +124,9 @@
         /// <returns>A task which is responsible for creating the application user.</returns>
         public async Task CreateAsync(ApplicationUser user)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.PostAsJsonAsync("api/accounts/create", new
+                var result = await proxy.PostAsJsonAsync(ServiceList.Accounts, "create", new
                 {
                     Name = user.UserName,
                     user.Email,
@@ -144,8 +146,10 @@
         /// <returns>A task that is responsible for deleting the application user.</returns>
         public async Task DeleteAsync(ApplicationUser user)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
-                await proxy.DeleteAsync(string.Format("api/accounts/delete/{0}", user.Id));
+            using (var proxy = new ServiceProxy())
+            {
+                await proxy.DeleteAsync(ServiceList.Accounts, string.Format("delete/{0}", user.Id));
+            }
         }
 
         /// <summary>
@@ -156,9 +160,9 @@
         /// the found user instance.</returns>
         public async Task<ApplicationUser> FindByIdAsync(string userId)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync(string.Format("api/accounts/id/{0}", userId));
+                var result = await proxy.GetAsync(ServiceList.Accounts, string.Format("id/{0}", userId));
                 if (result.StatusCode == HttpStatusCode.NotFound)
                 {
                     return null;
@@ -186,9 +190,9 @@
         /// the found user instance.</returns>
         public async Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                var result = await proxy.GetAsync(string.Format("api/accounts/name/{0}", userName));
+                var result = await proxy.GetAsync(ServiceList.Accounts, string.Format("name/{0}", userName));
                 if (result.StatusCode == HttpStatusCode.NotFound)
                 {
                     return null;
@@ -219,9 +223,9 @@
         /// <returns>A task that is responsible for updating the user.</returns>
         public async Task UpdateAsync(ApplicationUser user)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
-                await proxy.PostAsJsonAsync(string.Format("api/accounts/update/{0}", user.Id), new
+                await proxy.PostAsJsonAsync(ServiceList.Accounts, string.Format("update/{0}", user.Id), new
                 {
                     user.DisplayName,
                     user.Email
@@ -251,10 +255,10 @@
 
         public async Task<DateTimeOffset> GetLockoutEndDateAsync(ApplicationUser user)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
                 dynamic account =
-                JsonConvert.DeserializeObject(await proxy.GetStringAsync(string.Format("api/accounts/id/{0}", user.Id)));
+                JsonConvert.DeserializeObject(await proxy.GetStringAsync(ServiceList.Accounts, string.Format("id/{0}", user.Id)));
                 var lastLockedDate = (DateTime?)account.DateLockedEnd;
                 var lockoutEndDate = lastLockedDate.HasValue
                     ? new DateTimeOffset(DateTime.SpecifyKind(lastLockedDate.Value, DateTimeKind.Utc))
@@ -289,10 +293,10 @@
 
         public async Task SetLockoutEndDateAsync(ApplicationUser user, DateTimeOffset lockoutEnd)
         {
-            using (var proxy = new ServiceProxy(this.baseAddress))
+            using (var proxy = new ServiceProxy())
             {
                 var lockEndDate = lockoutEnd.UtcDateTime;
-                await proxy.PutAsJsonAsync(string.Format("api/accounts/update/{0}", user.Id), new
+                await proxy.PutAsJsonAsync(ServiceList.Accounts, string.Format("update/{0}", user.Id), new
                 {
                     LockoutEndDate = lockEndDate
                 });

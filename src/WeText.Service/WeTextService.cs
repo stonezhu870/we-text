@@ -17,11 +17,20 @@ using WeText.Common;
 using WeText.Common.Config;
 using WeText.Services.Common;
 using WeText.Common.Consul;
+using WeText.Common.Helpers;
 
 namespace WeText.Service
 {
     internal sealed class WeTextService : Common.Services.Service
     {
+        public override string ServiceName
+        {
+            get
+            {
+                return "WeText-Core";
+            }
+        }
+
         private readonly WeTextConfiguration configuration = WeTextConfiguration.Instance;
 
         private static ConsulAgentServiceRegistration registration = null;
@@ -67,17 +76,25 @@ namespace WeText.Service
         /// </summary>
         private void RegisterServiceDiscovery()
         {
+            var url = configuration.ApplicationSetting.Url;
+
+            //解析Url
+            var ub = new UrlBuilder(url);
+
+            var host = ub.Host == "+" || ub.Host == "*" ? "127.0.0.1" : ub.Host;
+            var port = string.IsNullOrEmpty(ub.Port) ? 80 : Convert.ToInt32(ub.Port);
+
             registration = new ConsulAgentServiceRegistration()
             {
-                ID = $"ss-{Guid.NewGuid()}",
+                ID = $"stn-{Guid.NewGuid()}",
                 Name = "api",
-                Port = 9023,
-                Tags = new[] { "tag1", "tag2" },
-                Address = "http://127.0.0.1",
+                Port = port,
+                Tags = microServices.Select(n => n.ServiceName).ToArray(),
+                Address = $"http://{host}",
                 Check = new ConsulAgentServiceCheck
                 {
                     Interval = "60s",
-                    HTTP = "http://127.0.0.1:9023/api/consul/heartbeat",
+                    HTTP = $"http://{host}:{port}/api/consul/heartbeat",
                 }
             };
 
@@ -123,9 +140,6 @@ namespace WeText.Service
             // Discovers the services.
             DiscoverServices(builder);
 
-            //ServiceDiscovery
-            RegisterServiceDiscovery();
-
             // Register the API controllers within the current assembly.
             builder.RegisterApiControllers(this.GetType().Assembly);
 
@@ -134,6 +148,9 @@ namespace WeText.Service
 
             // Register the services.
             microServices.AddRange(container.Resolve<IEnumerable<IService>>());
+
+            //ServiceDiscovery
+            RegisterServiceDiscovery();
 
             app.UseAutofacMiddleware(container);
 
