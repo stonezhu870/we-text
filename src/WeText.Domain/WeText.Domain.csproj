@@ -61,7 +61,9 @@
     <Compile Include="Commands\AcceptInvitationCommand.cs" />
     <Compile Include="Commands\AddFriendCommand.cs" />
     <Compile Include="Commands\ChangeTextCommand.cs" />
+    <Compile Include="Commands\UpdateAppInfoCommand.cs" />
     <Compile Include="Commands\CreateTextCommand.cs" />
+    <Compile Include="Commands\CreateAppInfoCommand.cs" />
     <Compile Include="Commands\CreateUserCommand.cs" />
     <Compile Include="Commands\RejectInvitationCommand.cs" />
     <Compile Include="Commands\SendInvitationCommand.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Events\UserEmailChangedEvent.cs" />
     <Compile Include="Invitation.cs" />
     <Compile Include="Text.cs" />
+    <Compile Include="AppInfo.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

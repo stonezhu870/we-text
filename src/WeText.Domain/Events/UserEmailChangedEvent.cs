@@ -16,6 +16,5 @@ namespace WeText.Domain.Events
         {
             this.Email = email;
         }
-
     }
 }

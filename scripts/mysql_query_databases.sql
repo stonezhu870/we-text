@@ -12,6 +12,18 @@ CREATE TABLE `accounts` (
   UNIQUE KEY `Name_UNIQUE` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `appinfo` (
+  `AppKey` varchar(36) NOT NULL,
+  `AppSecret` varchar(32) NOT NULL,
+  `Title` varchar(50) NOT NULL,
+  `Remark` varchar(200) NOT NULL,
+  `Icon` varchar(500) DEFAULT NULL,
+  `ReturnUrl` varchar(1024) DEFAULT NULL,
+  `IsEnable` bit DEFAULT false,
+  `CreateTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`AppKey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE DATABASE `wetext.social` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `wetext.social`;
 CREATE TABLE `networks` (

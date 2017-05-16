@@ -98,7 +98,14 @@ namespace WeText.Service
                 }
             };
 
-            ConsulService.Register(registration);
+            try
+            {
+                ConsulService.Register(registration);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("服务注册失败！");
+            }
         }
 
         private void UnRegisterServerDiscovery()

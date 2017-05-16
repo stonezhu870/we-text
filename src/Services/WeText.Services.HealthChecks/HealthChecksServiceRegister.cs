@@ -28,7 +28,8 @@ namespace WeText.Services.HealthChecks
         {
             get
             {
-                yield return x => new HealthChecksCommandHandler(x.Resolve<IDomainRepository>());
+                yield return null;
+                //yield return x => new HealthChecksCommandHandler(x.Resolve<IDomainRepository>());
             }
         }
 
@@ -36,7 +37,8 @@ namespace WeText.Services.HealthChecks
         {
             get
             {
-                yield return x => new HealthChecksEventHandler(this.ResolveTableDataGateway(x));
+                yield return null;
+                //yield return x => new HealthChecksEventHandler(this.ResolveTableDataGateway(x));
             }
         }
 

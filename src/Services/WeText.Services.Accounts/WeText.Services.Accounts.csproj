@@ -66,6 +66,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -84,13 +85,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountsCommandHandler.cs" />
+    <Compile Include="Events\AccountsEventHandler.AppInfo.cs" />
+    <Compile Include="Commands\AccountsCommandHandler.AppInfo.cs" />
+    <Compile Include="Services\AccountController.AppInfo.cs" />
+    <Compile Include="Commands\AccountsCommandHandler.cs" />
     <Compile Include="AccountService.cs" />
     <Compile Include="AccountServiceRegister.cs" />
-    <Compile Include="AccountsEventHandler.cs" />
+    <Compile Include="Events\AccountsEventHandler.cs" />
+    <Compile Include="Models\AppInfoTableObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AccountController.cs" />
-    <Compile Include="AccountTableObject.cs" />
+    <Compile Include="Services\AccountController.cs" />
+    <Compile Include="Models\AccountTableObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WeText.Common\WeText.Common.csproj">

@@ -11,23 +11,13 @@ using WeText.Domain.Commands;
 
 namespace WeText.Services.HealthChecks
 {
-    internal sealed class HealthChecksCommandHandler : 
-        ICommandHandler<ChangeTextCommand>, 
-        ICommandHandler<CreateTextCommand>
+    internal sealed class HealthChecksCommandHandler
     {
         private IDomainRepository domainRepository;
 
         public HealthChecksCommandHandler(IDomainRepository domainRepository)
         {
             this.domainRepository = domainRepository;
-        }
-
-        public async Task Handle(ChangeTextCommand message)
-        {
-        }
-
-        public async Task Handle(CreateTextCommand message)
-        {
         }
     }
 }

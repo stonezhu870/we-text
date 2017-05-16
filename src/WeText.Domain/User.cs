@@ -38,7 +38,6 @@ namespace WeText.Domain
 
         public IEnumerable<Guid> MyFriends => myFriends;
 
-
         public void ChangeDisplayName(string displayName)
         {
             ApplyEvent(new UserDisplayNameChangedEvent(this.Id, displayName));

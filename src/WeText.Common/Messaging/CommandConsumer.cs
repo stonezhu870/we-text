@@ -32,7 +32,7 @@ namespace WeText.Common.Messaging
                           var messageType = e.Message.GetType();
                           var methodInfoQuery = from method in handlerType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
                                                 let parameters = method.GetParameters()
-                                                where method.Name == "HandleAsync" &&
+                                                where method.Name == "Handle" &&
                                                 method.ReturnType == typeof(Task) &&
                                                 parameters.Length == 1 &&
                                                 parameters[0].ParameterType == messageType
